@@ -1,5 +1,5 @@
 {
-  "date": "2026-09-22T17:28:30.063Z",
+  "date": "2026-09-22T17:47:26.450Z",
   "browser": "153.0.8010.12",
   "physicalPhone": false,
   "checks": [
@@ -27,28 +27,54 @@
   "run": {
     "phase": "result",
     "run": {
-      "t": 38.84999999999908,
-      "distance": 610.0091666666684,
-      "x": 3.616666666666667,
+      "t": 22.333333333333346,
+      "distance": 324.2708333333342,
+      "x": 3.0333333333333337,
       "y": 0,
-      "lean": -1.9731051830153774e-162,
+      "lean": -4.5804899686903935e-92,
       "roll": 0,
       "punch": 0,
       "speed": 17.3,
-      "dignity": 15,
-      "score": 1805.3833333333253,
+      "dignity": 0,
+      "score": 197.41666666666544,
       "multiplier": 1
     },
     "done": true,
-    "delivered": true,
+    "delivered": false,
     "stats": {
-      "calls": 261,
-      "triangles": 275462,
-      "textures": 35
+      "calls": 244,
+      "triangles": 271917,
+      "textures": 28
+    },
+    "audio": {
+      "state": "running",
+      "enabled": true,
+      "scene": "idle",
+      "loaded": [
+        "punch",
+        "jump",
+        "near",
+        "geyser",
+        "crash",
+        "bus",
+        "pigeon",
+        "finish",
+        "workshop",
+        "replay"
+      ],
+      "failures": [],
+      "liveEffects": 0,
+      "musicPlaying": false,
+      "played": {
+        "punch": 1,
+        "crash": 8,
+        "finish": 1
+      },
+      "outputRms": 0
     },
     "recording": null,
     "replayComplete": true,
-    "clipBytes": 611995,
+    "clipBytes": 847170,
     "passEligible": false
   }
 }

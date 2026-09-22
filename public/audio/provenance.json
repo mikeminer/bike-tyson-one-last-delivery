@@ -1,0 +1,23 @@
+{
+  "date": "2026-09-22",
+  "composer": "Google Gemini (Flash Esteso, as shown in the web UI)",
+  "conversation": "https://gemini.google.com/app/5f07a28b972543b7",
+  "source": "src/gemini-score.json",
+  "sourceSha256": "7ba5a6183ecb0831c3e000ba15d38e075462b5b9f6fbc71ea5dd580e582048da",
+  "recordingGenerator": "None: two Lyria generation attempts returned errors",
+  "renderer": "Codex-authored Web Audio renderer, 24 kHz mono, normalized peaks, deterministic noise",
+  "contents": [
+    "workshop",
+    "replay",
+    "punch",
+    "jump",
+    "near",
+    "geyser",
+    "crash",
+    "bus",
+    "pigeon",
+    "finish"
+  ],
+  "adaptation": "The replay phrase plays at 1.2× speed in the game to fit the 8-second clip. WAV previews retain the original score timing.",
+  "voice": "Optional device speech synthesis is unchanged, not a Gemini voice and not captured in exports."
+}

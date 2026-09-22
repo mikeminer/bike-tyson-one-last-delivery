@@ -7,7 +7,9 @@
 - Body, wheels and drivetrain are geometry created in source; skin pores use a source-generated bump map. Feet use two-bone inverse kinematics, arms animate for a punch, and wheel/crank transforms follow recorded distance. Fixed character meshes are batched by material.
 - All 3D environment/obstacle geometry, shop signs, game UI, icon and colors were created in source for this project. No character or art was copied from DevFridge World or the linked Pump.fun page.
 - Asphalt base color and bump maps, shadow texture and sign textures are generated locally by the source. They have no external runtime image dependencies.
-- Audio effects are synthesized with Web Audio. Optional narration uses browser speech synthesis and the user's installed voice; it is not a cloned voice and not part of the video export.
+- Music notes and eight layered sound-effect recipes were composed by Gemini in the user-authorized session on 2026-09-22: https://gemini.google.com/app/5f07a28b972543b7 . The downloaded JSON is preserved verbatim in `src/gemini-score.json`. Codex implemented and validated the renderer, instrument envelopes, mixing, fades, volume limits and gameplay integration. Reproducible WAV previews are in `public/audio/`.
+- These are Gemini-composed, locally synthesized sounds, not Lyria recordings. Two Lyria music-generation requests returned errors and produced no audio file.
+- Audio effects and both music loops are synthesized with Web Audio. Optional narration uses browser speech synthesis and the user's installed voice; it is not a cloned voice and not part of the video export.
 - User supplied the Bike Tyson game concept, title, comic direction, sample captions and mint. Brand ownership and final publication consent should be reviewed by the user before public release.
 
 ## Fonts

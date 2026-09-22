@@ -49,3 +49,8 @@ No user wallet was connected, no real transaction signed, no tokens bought/moved
 - Any future ranked/valuable score path needs separate server authority and anti-abuse design. Current local scores, signatures and replays do not establish human play or entitlement to rewards.
 
 The showcase metadata file and PR must use the then-current upstream schema, validator and template. No public submission, owner approval, gallery publication or competition eligibility is asserted by these local tests.
+
+
+## Gemini audio revision
+
+Two Gemini-composed loops and eight layered effects are rendered from the retained JSON. Lyria file generation failed twice; there are no Lyria recordings in this build. Audio verification passed nine checks covering real Web Audio output, keyboard triggers, mute, pause/resume, toggling sound while paused, cleanup and 10 WAV exports with finite samples, nonzero energy and bounded peaks. See evidence/audio-verification.json. All 19 browser checks passed. Production smoke decoded the exported audio: RMS 0.03328, peak 0.39359, two channels. Its actual container duration was 9.071864 seconds under browser automation; the simulation replay timeline remains eight seconds. No physical-phone or subjective listening review is claimed.

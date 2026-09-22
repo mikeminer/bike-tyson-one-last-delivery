@@ -1,0 +1,68 @@
+{
+  "date": "2026-09-22T17:48:26.140Z",
+  "checks": [
+    "No autoplay before a user gesture",
+    "Both Gemini loops and all 8 effects render; gameplay emits measurable audio",
+    "Jump and punch trigger the Gemini effects from real keyboard input",
+    "Mute silences the actual output bus",
+    "Pause suspends the audio clock",
+    "Toggling sound while paused does not resume the audio clock",
+    "Resume restores music",
+    "Returning home stops music and old effects",
+    "10 reproducible WAV previews exported without clipping or silent buffers"
+  ],
+  "errors": [],
+  "rendered": {
+    "punch": {
+      "duration": 0.27,
+      "peak": 0.7799999713897705,
+      "rms": 0.10178576822069142
+    },
+    "jump": {
+      "duration": 0.39,
+      "peak": 0.7799999713897705,
+      "rms": 0.1301583563176084
+    },
+    "near": {
+      "duration": 0.9900416666666667,
+      "peak": 0.7799999713897705,
+      "rms": 0.11528392457095078
+    },
+    "geyser": {
+      "duration": 1.2400416666666667,
+      "peak": 0.7799999713897705,
+      "rms": 0.15830785040754658
+    },
+    "crash": {
+      "duration": 1.3400416666666666,
+      "peak": 0.7799999713897705,
+      "rms": 0.1128589876456519
+    },
+    "bus": {
+      "duration": 0.69,
+      "peak": 0.7799999713897705,
+      "rms": 0.086665569803801
+    },
+    "pigeon": {
+      "duration": 0.47,
+      "peak": 0.7799999713897705,
+      "rms": 0.10743168190459973
+    },
+    "finish": {
+      "duration": 1.54,
+      "peak": 0.7799999713897705,
+      "rms": 0.08886957250075397
+    },
+    "workshop": {
+      "duration": 7.619083333333333,
+      "peak": 0.6800000071525574,
+      "rms": 0.06251491952745099
+    },
+    "replay": {
+      "duration": 9.6,
+      "peak": 0.6800000071525574,
+      "rms": 0.06634012287669112
+    }
+  },
+  "passed": true
+}

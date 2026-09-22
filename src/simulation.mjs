@@ -37,7 +37,7 @@ export function step(run, input, dt) {
   run.tumble = Math.max(0, run.tumble - dt);
   run.x = Math.max(-4.15, Math.min(4.15, run.x + input.steer * 7 * dt));
   run.lean += (-input.steer * .32 - run.lean) * Math.min(1, dt * 9);
-  if (input.jump && !run.jumpHeld && run.y <= .02 && run.tumble === 0) run.vy = 9;
+    if (input.jump && !run.jumpHeld && run.y <= .02 && run.tumble === 0) { run.vy = 9; event(run, 'jump', '', 0); }
   if (input.punch && !run.punchHeld && run.cooldown <= 0) { run.punch = .4; run.cooldown = .8; run.punches++; event(run, 'punch', '', 0); }
   run.jumpHeld = input.jump; run.punchHeld = input.punch;
   run.vy -= 23 * dt; run.y = Math.max(0, run.y + run.vy * dt);
