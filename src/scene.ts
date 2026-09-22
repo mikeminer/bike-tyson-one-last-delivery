@@ -2,6 +2,7 @@ import * as T from 'three';
 import { RoundedBoxGeometry } from 'three/addons/geometries/RoundedBoxGeometry.js';
 import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
 import { mergeGeometries } from 'three/addons/utils/BufferGeometryUtils.js';
+import { makeReferenceBike } from './character';
 import { random } from './simulation.mjs';
 
 type Frame = { t: number; distance: number; x: number; y: number; lean: number; roll: number; punch: number; speed: number };
@@ -64,46 +65,6 @@ function mergeStatic(group: T.Group) {
   group.traverse(n => { if (n instanceof T.Mesh) n.geometry.dispose(); });
   return merged;
 }
-function makeBike() {
-  const root = new T.Group(), wheels: T.Group[] = [], gloves: T.Group[] = [];
-  for (const z of [-1.12, 1.12]) {
-    const wheel = at(root, new T.Group(), 0, .73, z);
-    const tyre = new T.Mesh(new T.TorusGeometry(.64, .125, 10, 28), mats.rubber); tyre.rotation.y = Math.PI / 2; tyre.castShadow = true; wheel.add(tyre);
-    const rim = new T.Mesh(new T.TorusGeometry(.535, .032, 6, 28), mats.metal); rim.rotation.y = Math.PI / 2; wheel.add(rim);
-    const hub = cylinder(.115, .36, mats.metal); hub.rotation.z = Math.PI / 2; wheel.add(hub);
-    for (let j = 0; j < 10; j++) { const a = j / 10 * Math.PI * 2; tube(wheel, [0, 0, 0], [0, Math.cos(a) * .52, Math.sin(a) * .52], .013, mats.metal); }
-    wheels.push(wheel);
-  }
-  const nodes = [[0,.73,1.12],[0,1.72,.45],[0,.75,0],[0,1.9,-.7],[0,.73,-1.12]];
-  for (const [a,b] of [[0,1],[1,2],[2,0],[1,3],[3,2],[3,4]]) tube(root,nodes[a],nodes[b],.085,mats.paint);
-  tube(root, [.16, .75, 1.12], [.16, .75, 0], .035, mats.dark);
-  tube(root, [0, 1.7, .45], [0, 2, .5], .055, mats.metal);
-  at(root, box(.55,.14,.7,mats.rubber,true),0,2.06,.5);
-  const pedals = at(root,new T.Group(),0,.8,0);
-  tube(pedals,[-.4,-.22,0],[.4,.22,0],.045,mats.metal);
-  at(pedals,box(.3,.1,.2,mats.rubber),-.48,-.22,0); at(pedals,box(.3,.1,.2,mats.rubber),.48,.22,0);
-  tube(root,[0,1.9,-.7],[0,2.3,-.86],.065,mats.metal);
-  tube(root,[-.75,2.3,-.86],[.75,2.3,-.86],.065,mats.metal);
-  for (const side of [-1,1]) {
-    const arm = at(root,new T.Group(),side*.75,2.3,-.85);
-    tube(arm,[0,0,0],[side*.2,-.12,-.25],.11,mats.paint);
-    const glove = at(arm,new T.Group(),side*.14,-.08,-.48);
-    const fist = at(glove,sphere(.32,mats.glove),0,0,0); fist.scale.set(.95,1.15,1.15);
-    at(glove,sphere(.15,mats.glove),-side*.2,-.12,-.04);
-    const cuff=at(glove,cylinder(.21,.25,mats.cream),0,0,.3); cuff.rotation.x=Math.PI/2;
-    const seam=at(glove,box(.025,.32,.02,mats.cream),side*.14,0,-.31); seam.rotation.z=side*.25;
-    gloves.push(arm);
-  }
-  tube(root,[0,2.3,-.86],[0,2.79,-.88],.085,mats.metal);
-  const face=at(root,box(.8,.52,.35,mats.cream,true),0,2.83,-.94);
-  for (const side of [-1,1]) { at(face,box(.24,.17,.055,mats.lens,true),side*.16,.035,-.17); tube(face,[side*.04,.15,-.2],[side*.28,.09,-.2],.035,mats.dark); }
-  at(face,box(.2,.025,.04,mats.dark),0,-.13,-.17);
-  const bag=at(root,box(.73,.56,.43,mats.dark,true),0,1.68,1.03); bag.rotation.x=-.1;
-  at(bag,box(.6,.065,.025,mats.cream),0,0,.23);
-  for (const side of [-1,1]) at(bag,box(.08,.17,.04,mats.metal),side*.21,.12,.23);
-  tube(bag,[-.18,.29,0],[-.18,.43,0],.035,mats.metal);tube(bag,[.18,.29,0],[.18,.43,0],.035,mats.metal);tube(bag,[-.18,.43,0],[.18,.43,0],.035,mats.metal);
-  return { root,wheels,gloves,pedals };
-}
 function makeObstacle(type: string) {
   const g=new T.Group();
   if (type==='hydrant') {
@@ -138,7 +99,7 @@ function makeObstacle(type: string) {
 export class CityScene {
   renderer: T.WebGLRenderer;
   scene=new T.Scene();camera=new T.PerspectiveCamera(45,1,.1,220);
-  bike=makeBike();sun=new T.DirectionalLight(0xffe2bb,3.3);headlight=new T.SpotLight(0xffefbf,110,42,.52,.8,1.6);ambient=new T.HemisphereLight(0xe5f0df,0x817050,1.2);
+  bike=makeReferenceBike();sun=new T.DirectionalLight(0xffe2bb,3.3);headlight=new T.SpotLight(0xffefbf,110,42,.52,.8,1.6);ambient=new T.HemisphereLight(0xe5f0df,0x817050,1.2);
   obstacles=new Map<number,T.Group>(); effects: T.Group;
   shadow: T.Mesh; frame?: Frame; mode='ready'; width=1;height=1;
   reduced=matchMedia('(prefers-reduced-motion: reduce)').matches;needsFrame=true;
@@ -209,10 +170,8 @@ export class CityScene {
     this.headlight.position.set(frame.x,2.4+frame.y,-distance-.8);this.headlight.target.position.set(frame.x,0,-distance-18);
     this.bike.root.position.set(frame.x,frame.y,-distance);this.bike.root.rotation.set(frame.roll*.15,0,frame.lean+frame.roll);
     this.bike.root.scale.setScalar(mode==='ready'?1.3:1);
-    if(mode==='ready'){this.bike.root.rotation.y=3.7;this.bike.root.rotation.z=-.07;}
-    for(const w of this.bike.wheels)w.rotation.x=-distance/.65;
-    this.bike.pedals.rotation.x=-distance*2;
-    this.bike.gloves.forEach((g,i)=>{g.rotation.x=frame.punch>0?-Math.sin(frame.punch/.4*Math.PI)*1.25:(this.reduced?0:Math.sin(clock*3+i)*.07);});
+    if(mode==='ready'){this.bike.root.rotation.y=3.15;this.bike.root.rotation.z=-.07;}
+    this.bike.animate(distance,frame.punch,this.reduced?0:clock);
     this.shadow.position.set(frame.x,.012,-distance);(this.shadow.material as T.MeshBasicMaterial).opacity=Math.max(.15,1-frame.y*.15);
     for(const o of obstacles){const g=this.obstacles.get(o.id)!;const age=o.hit<0?-1:frame.t-o.hit;
       g.visible=Math.abs(o.z-distance)<135 && (age<0||age<3.5);g.position.set(o.x,0,-o.z);g.rotation.set(0,0,0);g.scale.setScalar(1);
@@ -223,7 +182,7 @@ export class CityScene {
     this.effects.visible=!!fountain;
     if(fountain){const age=frame.t-fountain.hit;this.effects.children.forEach((p,i)=>{const u=((age+i*.08)%1.2);p.position.set(fountain.x+Math.sin(i*2.4)*u,1+u*10-u*u*7,-fountain.z+Math.cos(i*2.4)*u);});}
     let target=new T.Vector3(frame.x*.35,1.5,-distance-6),position:T.Vector3;
-    if(mode==='ready') {position=new T.Vector3(8.4,4.8,9);target=new T.Vector3(-3.2,1.7,-1.5);this.camera.fov=this.width/this.height<.8?48:40;}
+    if(mode==='ready') {const portrait=this.width/this.height<.8;position=portrait?new T.Vector3(9,5.5,10):new T.Vector3(8.4,4.8,9);target=portrait?new T.Vector3(0,4.1,0):new T.Vector3(-3.2,1.7,-1.5);this.camera.fov=portrait?48:40;}
     else if(mode==='replay'){const offset=frame.x>0?-3.7:3.7;position=new T.Vector3(Math.max(-4.7,Math.min(4.7,frame.x+offset+Math.sin(clock*.2)*.6)),frame.y+3.5,-distance+6);target=new T.Vector3(frame.x,frame.y+1.3,-distance);this.camera.fov=42;}
     else {position=new T.Vector3(frame.x*.4,5.4+frame.y*.18,-distance+9.5);this.camera.fov=this.width/this.height<.8?62:50;}
     this.camera.position.copy(position);this.camera.lookAt(target);this.camera.updateProjectionMatrix();

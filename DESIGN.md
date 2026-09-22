@@ -2,7 +2,7 @@
 
 ## Confirmed
 
-BIKE TYSON: ONE LAST DELIVERY. Original anthropomorphic boxing bicycle; deliberately overconfident delivery character. No imitation of Mike Tyson's face, tattoos or voice. Play sessions of roughly 30–60 seconds. Automatic acceleration, direction, jump and Bike Punch. Absurd obstacles, comic impacts and a short replay.
+BIKE TYSON: ONE LAST DELIVERY. Reference-based muscular human/bicycle hybrid; deliberately overconfident delivery character. The user's later supplied image supersedes the earlier robot/original-face direction. The interface, accessibility labels, wallet messages and video captions are in English. No voice cloning. Play sessions of roughly 30–60 seconds. Automatic acceleration, direction, jump and Bike Punch. Absurd obstacles, comic impacts and a short replay.
 
 Community mint: `CbyTNf7UPzvewHh4Zp6umogM2RWahhmGRJWLJnPwpump` on Solana mainnet. Threshold: 1,000 whole tokens, six verified decimals, 1,000,000,000 raw units. Any unexpired lock, no minimum duration. Same-mint locks of the same authenticated wallet are summed; expired deposits stop counting.
 

@@ -6,7 +6,7 @@
 
 **Community:** BIKE TYSON. Exact Solana mainnet mint: `CbyTNf7UPzvewHh4Zp6umogM2RWahhmGRJWLJnPwpump`.
 
-**Playable scope:** One Last Delivery with free practice and Midnight Dispatch, a daily-seeded, denser night variation unlocked by the Delivery Pass. Keyboard and touch controls; original Three.js art; automatic recorded replay; local personal bests.
+**Playable scope:** One Last Delivery with free practice and Midnight Dispatch, a daily-seeded, denser night variation unlocked by the Delivery Pass. Keyboard and touch controls; a Three.js city and reference-based muscle bicycle; automatic recorded replay; local personal bests.
 
 **Access:** aggregate at least 1,000 BIKE TYSON in unexpired DevFridge locks belonging to the authenticated wallet. Six decimals: `1000000000` raw units. No minimum lock duration. Expired deposits stop counting. Failed/stale lookups revoke UI eligibility; a run continues as practice. No purchase is required to assess the game.
 

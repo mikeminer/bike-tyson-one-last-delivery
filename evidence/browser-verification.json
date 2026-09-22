@@ -1,5 +1,5 @@
 {
-  "date": "2026-09-22T16:56:49.292Z",
+  "date": "2026-09-22T17:28:30.063Z",
   "browser": "153.0.8010.12",
   "physicalPhone": false,
   "checks": [
@@ -27,28 +27,28 @@
   "run": {
     "phase": "result",
     "run": {
-      "t": 35.64999999999926,
-      "distance": 610.1825000000034,
-      "x": 4.15,
+      "t": 38.84999999999908,
+      "distance": 610.0091666666684,
+      "x": 3.616666666666667,
       "y": 0,
-      "lean": -2.323309744612715e-138,
+      "lean": -1.9731051830153774e-162,
       "roll": 0,
       "punch": 0,
       "speed": 17.3,
-      "dignity": 100,
-      "score": 3731.383333333305,
-      "multiplier": 3.75
+      "dignity": 15,
+      "score": 1805.3833333333253,
+      "multiplier": 1
     },
     "done": true,
     "delivered": true,
     "stats": {
-      "calls": 159,
-      "triangles": 160248,
-      "textures": 33
+      "calls": 261,
+      "triangles": 275462,
+      "textures": 35
     },
     "recording": null,
     "replayComplete": true,
-    "clipBytes": 513229,
+    "clipBytes": 611995,
     "passEligible": false
   }
 }

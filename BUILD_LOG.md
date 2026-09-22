@@ -47,3 +47,16 @@
 - Future features: ghost racing, community content, weekly competitions and opt-in on-chain scores require their own design, permissions and score authority; they were not presented as working features in this build.
 - Final evidence: 11 unit tests, 19 browser checks, zero uncaught browser errors and zero npm audit findings. Production smoke test passed with no external page requests; four restart cycles held texture count at 10. The exported 360×640 WebM decoded and played for 7.898714 seconds. A hidden local Node production server serves the preview on port 4173.
 - Version control: initialized an isolated repository inside this game's output directory on branch `codex/bike-tyson`; the parent home-directory repository was not modified. Source publication and submission remain pending the user's request.
+
+
+## Reference character and English revision — 2026-09-22
+
+- Human steering: match the supplied muscle bicycle image and make the entire game English. This supersedes the earlier robot bicycle visual direction; the confirmed 1,000-token active-lock policy stays in effect.
+- Replaced the orange mechanical frame, robot head and boxing gloves with a procedural muscular torso, tapered arms/legs, thin tires and spokes, chain/cranks, feet on pedals, a black saddle and handlebars emerging beside a head. A reference-derived facial texture was generated with built-in image_gen and mapped to a curved facial mesh. This is a stylized reconstruction, not a scanned model or exact photorealistic reproduction.
+- Pedaling uses two-bone leg IK. Punching animates a bare fist; wheel rotation and pedal motion derive from recorded distance, so they also work in the actual-run replay. Batched rigid pieces by material and lowered geometry detail for small chain links.
+- Translated menus, controls, help, HUD, results, sharing, accessibility labels, wallet states, auth/RPC errors, lock disclosures, HTML language and metadata to English. Number formatting is en-US. Provider-signature failures use a stable English message.
+- Visual review corrected face projection/occlusion and mobile camera framing. The full bicycle now fits below the portrait start button. Startup waits for the character texture and reports asset-load failure separately from WebGL failure.
+- Verification: build and 11 unit checks passed; browser play/replay/input/Phantom-fixture checks and refreshed evidence are recorded in VERIFICATION.md and evidence/. No user wallet, transaction, purchase, new contract or public publication was involved.
+- The first compound server restart command was rejected by automatic review without a detailed reason. A scoped PowerShell script validated the recorded game process before restarting only that server and succeeded.
+- Final revision checks: 19 browser checks passed with zero uncaught errors. Production playback decoded the actual 360×640 recording (8.189557 seconds); four restart cycles held 12 resident textures with no external page requests. The in-app preview was reloaded and visually inspected in English; the user's existing local best was preserved.
+- GitNexus CLI is available, but its running MCP reader reports a storage-format mismatch (database 42, reader 40). This affects code-index queries, not the build, game server or browser checks.

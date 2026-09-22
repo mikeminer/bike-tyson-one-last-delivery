@@ -2,7 +2,9 @@
 
 ## Original project work
 
-- Bike Tyson is a newly modeled anthropomorphic bicycle with boxing gloves, sunglasses/headlamp face, crank, spokes, frame, pedals and delivery case. It does not use a real person's facial likeness, tattoos or voice identity.
+- The current character is a procedural, stylized 3D adaptation of the user-supplied image `4905cec7-705d-4bfc-8f62-aa5227fa3abd.webp`. The user requested this visual direction after the original robot bicycle iteration. The model has a muscular body/frame, thin spoked wheels, bare hands on the front axle, feet animated on pedals, black handlebars beside the head and a saddle on the back. It includes the reference-based face and facial tattoo; it must not be described as an unrelated original face or a licensed/scanned likeness. Rights in the reference have not been independently verified.
+- `public/character/face.png` was generated with the built-in `image_gen` tool on 2026-09-22 from that reference. No external image service, API key or 3D reconstruction service was used. It is UV-projected onto a curved 3D head surface. Full prompt and provenance are in `public/character/provenance.json`. The source reference itself is not redistributed.
+- Body, wheels and drivetrain are geometry created in source; skin pores use a source-generated bump map. Feet use two-bone inverse kinematics, arms animate for a punch, and wheel/crank transforms follow recorded distance. Fixed character meshes are batched by material.
 - All 3D environment/obstacle geometry, shop signs, game UI, icon and colors were created in source for this project. No character or art was copied from DevFridge World or the linked Pump.fun page.
 - Asphalt base color and bump maps, shadow texture and sign textures are generated locally by the source. They have no external runtime image dependencies.
 - Audio effects are synthesized with Web Audio. Optional narration uses browser speech synthesis and the user's installed voice; it is not a cloned voice and not part of the video export.

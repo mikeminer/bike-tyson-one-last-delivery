@@ -2,7 +2,7 @@
 
 Ride. Punch. Crash. Deliver.
 
-A playable Three.js arcade delivery game built around an original anthropomorphic boxing bicycle. No Mike Tyson likeness, tattoo, voice model or licensed character is used. The setting, bicycle, obstacles, surfaces and sound effects were created for this project.
+A playable Three.js arcade delivery game with an English interface. Its muscle bicycle is modeled after the visual reference supplied by the user: a human torso forms the frame, arms meet the front axle, feet pedal, handlebars emerge beside the head, and the saddle sits above the back. This is a stylized procedural 3D reconstruction, not a scanned or photorealistic character asset. The facial texture was generated from that reference with the built-in image generator; see ASSETS.md. Environment geometry and sound effects were created for this project. No voice cloning is used.
 
 ## Play
 

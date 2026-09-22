@@ -11,16 +11,16 @@ const report={date:new Date().toISOString(),browser:await browser.version(),phys
 const check=(name)=>{report.checks.push(name);console.log('PASS',name);};
 try {
   await page.goto('http://localhost:4173');await page.locator('#loading').waitFor({state:'detached'});await page.waitForFunction(()=>window.__BIKE_DIAGNOSTICS?.().stats.calls>0);
-  await page.screenshot({path:'evidence/desktop-ready.png'});check('Desktop initial scene renders');
-  await page.getByRole('button',{name:'Delivery Pass',exact:true}).click();await page.getByRole('button',{name:'COLLEGA PHANTOM'}).click();
-  await page.getByText('Phantom non rilevato.',{exact:false}).waitFor();check('No-wallet recovery preserves practice access');
-  await page.getByRole('button',{name:'Chiudi Delivery Pass'}).click();
-  await page.getByRole('button',{name:'ACCETTA LA CONSEGNA'}).click();
+  await page.screenshot({path:'evidence/desktop-ready.png'});check('Desktop initial scene renders');assert.equal(await page.locator('html').getAttribute('lang'),'en');assert.equal(await page.getByRole('button',{name:'ACCEPT THE DELIVERY'}).count(),1);
+  await page.getByRole('button',{name:'Delivery Pass',exact:true}).click();await page.getByRole('button',{name:'CONNECT PHANTOM'}).click();
+  await page.getByText('Phantom not detected.',{exact:false}).waitFor();check('No-wallet recovery preserves practice access');
+  await page.getByRole('button',{name:'Close Delivery Pass'}).click();
+  await page.getByRole('button',{name:'ACCEPT THE DELIVERY'}).click();
   await page.keyboard.down('KeyX');await page.waitForTimeout(100);await page.keyboard.up('KeyX');
   await page.keyboard.down('ArrowRight');await page.waitForTimeout(450);await page.keyboard.up('ArrowRight');
   const moved=await page.evaluate(()=>window.__BIKE_DIAGNOSTICS().run.x);assert.ok(moved>0);check('Keyboard steering and punch input work');
-  await page.getByRole('button',{name:'Pausa',exact:true}).click();const t1=await page.evaluate(()=>window.__BIKE_DIAGNOSTICS().run.t);await page.waitForTimeout(600);const t2=await page.evaluate(()=>window.__BIKE_DIAGNOSTICS().run.t);assert.equal(t1,t2);check('Pause freezes simulation');
-  await page.getByRole('button',{name:'RIPRENDI',exact:false}).click();
+  await page.getByRole('button',{name:'Pause',exact:true}).click();const t1=await page.evaluate(()=>window.__BIKE_DIAGNOSTICS().run.t);await page.waitForTimeout(600);const t2=await page.evaluate(()=>window.__BIKE_DIAGNOSTICS().run.t);assert.equal(t1,t2);check('Pause freezes simulation');
+  await page.getByRole('button',{name:'RESUME',exact:false}).click();
   await page.keyboard.down('ArrowRight');await page.waitForTimeout(1000);await page.keyboard.up('ArrowRight');
   await page.screenshot({path:'evidence/desktop-playing.png'});
   // Follow the outer road edge using genuine keyboard input, then observe the complete run.
@@ -51,17 +51,17 @@ try {
   const authContext=await browser.newContext({viewport:{width:1000,height:800}});const authPage=await authContext.newPage();
   const {privateKey,publicKey}=generateKeyPairSync('ed25519');const wallet=bs58.encode(publicKey.export({format:'der',type:'spki'}).subarray(-32));
   await authPage.exposeFunction('testSign',message=>Array.from(sign(null,Buffer.from(message),privateKey)));
-  await authPage.addInitScript(({wallet})=>{const callbacks={};window.rejectNextTestSignature=true;window.phantom={solana:{isPhantom:true,connect:async()=>({publicKey:{toString:()=>wallet}}),disconnect:async()=>callbacks.disconnect?.(),signMessage:async bytes=>{if(window.rejectNextTestSignature){window.rejectNextTestSignature=false;throw Error('Firma test annullata');}return{signature:new Uint8Array(await window.testSign(Array.from(bytes)))}} ,on:(name,fn)=>callbacks[name]=fn}};window.testAccountChange=()=>callbacks.accountChanged?.();},{wallet});
+  await authPage.addInitScript(({wallet})=>{const callbacks={};window.rejectNextTestSignature=true;window.phantom={solana:{isPhantom:true,connect:async()=>({publicKey:{toString:()=>wallet}}),disconnect:async()=>callbacks.disconnect?.(),signMessage:async bytes=>{if(window.rejectNextTestSignature){window.rejectNextTestSignature=false;throw Error('Test signature canceled');}return{signature:new Uint8Array(await window.testSign(Array.from(bytes)))}} ,on:(name,fn)=>callbacks[name]=fn}};window.testAccountChange=()=>callbacks.accountChanged?.();},{wallet});
   // These are explicitly synthetic UI fixtures. Real server authentication still verifies the generated test key.
   await authPage.route('**/api/access',route=>route.fulfill({json:{eligible:true,totalRaw:'1000000000',nextCheckAt:Math.floor(Date.now()/1000)+30,checkedAt:Math.floor(Date.now()/1000),wallet,source:'SYNTHETIC UI TEST FIXTURE',slot:123}}));
-  await authPage.goto('http://localhost:4173');await authPage.locator('#loading').waitFor({state:'detached'});await authPage.locator('#pass-button').click();await authPage.locator('#connect').click();await authPage.locator('#authenticate').click();await authPage.getByText('Firma test annullata',{exact:true}).waitFor();assert.equal(await authPage.locator('#special').isVisible(),false);check('Rejected message signature does not authenticate or unlock');
+  await authPage.goto('http://localhost:4173');await authPage.locator('#loading').waitFor({state:'detached'});await authPage.locator('#pass-button').click();await authPage.locator('#connect').click();await authPage.locator('#authenticate').click();await authPage.getByText('Signature canceled or unavailable. Please try again.',{exact:true}).waitFor();assert.equal(await authPage.locator('#special').isVisible(),false);check('Rejected message signature does not authenticate or unlock');
   await authPage.locator('#authenticate').click();await authPage.locator('#special').waitFor({state:'visible'});check('Synthetic Phantom signature authenticates through real server; qualifying UI fixture unlocks special');
   await authPage.locator('#special').click();await authPage.waitForFunction(()=>window.__BIKE_DIAGNOSTICS().phase==='playing');
   await authPage.evaluate(()=>{const label=document.createElement('div');label.id='fixture-label';label.textContent='SYNTHETIC TEST PASS · NO REAL WALLET OR LOCK';label.style.cssText='position:fixed;bottom:38px;left:20px;background:#e5ed38;color:#183a35;padding:12px;z-index:20;font:700 12px Arial';document.body.appendChild(label);});
   await authPage.screenshot({path:'evidence/midnight-fixture.png'});await authPage.evaluate(()=>document.querySelector('#fixture-label').remove());check('Special night route starts with synthetic eligible pass');
   await authPage.locator('#pass-button').click();
   await authPage.evaluate(()=>window.testAccountChange());await authPage.locator('#special').waitFor({state:'hidden'});check('Account change revokes previous eligibility');
-  await authPage.locator('#connect').click();await authPage.unroute('**/api/access');await authPage.route('**/api/access',route=>route.fulfill({status:503,json:{error:'RPC occupato (429): riprova tra 30 secondi.',eligible:false,status:'unavailable'}}));await authPage.locator('#authenticate').click();await authPage.getByText('RPC occupato (429)',{exact:false}).waitFor();assert.equal(await authPage.locator('#special').isVisible(),false);check('Unavailable RPC UI fixture never unlocks special');
+  await authPage.locator('#connect').click();await authPage.unroute('**/api/access');await authPage.route('**/api/access',route=>route.fulfill({status:503,json:{error:'RPC busy (429): try again in 30 seconds.',eligible:false,status:'unavailable'}}));await authPage.locator('#authenticate').click();await authPage.getByText('RPC busy (429)',{exact:false}).waitFor();assert.equal(await authPage.locator('#special').isVisible(),false);check('Unavailable RPC UI fixture never unlocks special');
   await authContext.close();assert.deepEqual(errors,[]);check('No uncaught browser errors');
 } catch(error){report.failure=error.stack;console.error(error);process.exitCode=1;}
 finally{await writeFile('evidence/browser-verification.json',JSON.stringify(report,null,2));await browser.close();}

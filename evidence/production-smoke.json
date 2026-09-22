@@ -1,21 +1,21 @@
 {
-  "date": "2026-09-22T17:01:50.186Z",
+  "date": "2026-09-22T17:30:34.010Z",
   "production": true,
   "errors": [],
   "externalRequests": [],
   "textureCounts": [
-    10,
-    10,
-    10,
-    10
+    12,
+    12,
+    12,
+    12
   ],
   "productionLoads": true,
   "repeatRunResourcesBounded": true,
   "recording": {
     "width": 360,
     "height": 640,
-    "duration": 7.898714,
-    "currentTime": 1.165374,
+    "duration": 8.189557,
+    "currentTime": 1.038022,
     "decodedFrames": 14
   },
   "passed": true

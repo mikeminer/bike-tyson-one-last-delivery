@@ -19,7 +19,7 @@
 | Dependency advisories | Zero known findings | `evidence/dependency-audit.json`; not an independent audit |
 | Production smoke test | Passed | `evidence/production-smoke.json`; production page renders, no external requests, no uncaught errors |
 | Replay file playback | Passed in Chromium | 360×640, 7.898714 seconds, decoded frames advance during playback |
-| Repeated-run resource cleanup | Passed | Four start/home cycles each reported 10 resident textures |
+| Repeated-run resource cleanup | Passed | Four start/home cycles are checked for bounded resident textures; see latest production-smoke.json |
 
 Unit coverage includes exact raw conversion, aggregate threshold, partial expiry, sub-day active locks, single-lock policy, duplicate/foreign/malformed/stale/future evidence, next-check boundaries, authenticated nonce replay, expiry, wrong origin, forged signatures, unknown mint extensions, RPC failures, completion and replay provenance.
 
@@ -27,11 +27,11 @@ The initial browser run found rapid taps could be lost before the next physics t
 
 ## Recorded game evidence
 
-`evidence/funny-finish-demo.webm` is an actual automatic replay of an automated practice run. The test completed the 610 m delivery and exported a vertical 360×640 recording. The replay presentation lasts eight seconds; container timing can differ slightly due to MediaRecorder startup/frame cadence. Captions and synthesized effects are included; device speech narration is not captured. This is not a human-play, prize-eligibility or real-Phantom recording.
+`evidence/funny-finish-demo.webm` is an actual automatic replay of an automated practice run. The test observed a complete run and exported a vertical 360×640 recording; its delivery outcome is recorded in browser-verification.json. The replay presentation lasts eight seconds; container timing can differ slightly due to MediaRecorder startup/frame cadence. Captions and synthesized effects are included; device speech narration is not captured. This is not a human-play, prize-eligibility or real-Phantom recording.
 
 Desktop and phone screenshots are in `evidence/`. `midnight-fixture.png` is prominently labelled synthetic test pass; it demonstrates the night route with a fixture and makes no claim about a real wallet deposit. The browser is Chromium 153.0.8010.12 on this Windows host, with phone emulation, not physical Android/iOS devices.
 
-An observed replay frame rendered approximately 160,000 triangles and 159 draw calls before subsequent resource cleanup; exact counts vary with camera/visible obstacles. Pixel ratio is capped at 1.5, with a lightweight option at 1 and shadows disabled. No physical-phone FPS or thermal measurements are claimed. The minified JavaScript bundle is approximately 583 kB / 152 kB gzip; Vite emits its standard 500 kB chunk advisory. Fonts add approximately 782 kB across all packaged weights/licences.
+An observed replay frame rendered approximately 261,000 triangles and 155 draw calls in the revised idle scene; exact counts vary with camera/visible obstacles. Pixel ratio is capped at 1.5, with a lightweight option at 1 and shadows disabled. No physical-phone FPS or thermal measurements are claimed. The minified JavaScript bundle is approximately 606 kB / 159 kB gzip; Vite emits its standard 500 kB chunk advisory. Fonts add approximately 782 kB across all packaged weights/licences.
 
 ## Live integration observations
 
