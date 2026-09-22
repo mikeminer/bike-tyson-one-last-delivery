@@ -78,3 +78,9 @@ The old message ended with `Action: delivery-pass`, which is not a Sign In With 
 Phantom rejection (4001), unauthorized account (4100), disconnection (4900), pending request (-32002), invalid input (-32000) and unsupported signing (-32601) now have distinct recovery messages. Other wallet errors retain their bounded explanation, rendered as text. An error never authenticates the wallet or grants eligibility.
 
 Validation: all 13 unit tests, production build and all 19 browser checks pass; the new run is recorded in `evidence/delivery-pass-signing-verification.json`. The authentication browser checks use a synthetic provider and generated test key, not a real Phantom wallet. The real-wallet report is not yet an end-to-end pass; the original client discarded the provider error. The separate per-instance nonce/session limitation on serverless hosting remains as documented above.
+
+## Delivery Pass lock onboarding — 2026-09-22
+
+Added the official DevFridge lock handoff with the exact BIKE TYSON mint, visible before wallet connection or eligibility, plus Copy CA, Pump.fun and Phantom mobile links. The card explains the 1,000-token aggregate rule, same-wallet requirement, choice of unlock date, redemption fee and route dependency, and returning to sign in/recheck. It does not submit a transaction or grant access on link click.
+
+Validation: TypeScript/Vite build passed. Browser inspection confirmed the live DevFridge form preselects the exact mint on Mainnet. The game card and copy success state were checked locally; at an observed 390x844 CSS viewport, document scrollWidth was 390 and dialog scrollWidth equaled its clientWidth (331), with no horizontal overflow. Actual locking/redemption and physical Phantom mobile execution were not performed.
