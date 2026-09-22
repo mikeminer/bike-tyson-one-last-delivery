@@ -17,7 +17,7 @@ export class Authentication {
     this.clean(now); if (!validWallet(wallet)) throw Error('Invalid wallet.');
     if (this.nonces.size >= 1000) throw Error('Too many requests. Try again later.');
     const nonce = randomBytes(24).toString('hex'), expiry = now + 120000;
-    const message = `${new URL(origin).host} wants you to sign in with your Solana account:\n${wallet}\n\nSign in to BIKE TYSON to check delivery-pass access. No transaction or token approval.\n\nURI: ${origin}\nVersion: 1\nChain ID: solana:mainnet\nNonce: ${nonce}\nIssued At: ${new Date(now).toISOString()}\nExpiration Time: ${new Date(expiry).toISOString()}\nAction: delivery-pass`;
+    const message = `${new URL(origin).host} wants you to sign in with your Solana account:\n${wallet}\n\nSign in to BIKE TYSON to check delivery-pass access. No transaction or token approval.\n\nURI: ${origin}\nVersion: 1\nChain ID: solana:mainnet\nNonce: ${nonce}\nIssued At: ${new Date(now).toISOString()}\nExpiration Time: ${new Date(expiry).toISOString()}\nRequest ID: delivery-pass`;
     this.nonces.set(nonce, { wallet, origin, message, expiry }); return { nonce, message, expiry };
   }
   authenticate(nonce, wallet, signature, origin, now = Date.now()) {

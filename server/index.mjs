@@ -20,4 +20,4 @@ http.createServer(async (req, res) => {
     const types = { '.html': 'text/html', '.js': 'text/javascript', '.css': 'text/css', '.svg': 'image/svg+xml', '.json': 'application/json', '.png':'image/png', '.webm':'video/webm', '.ttf':'font/ttf', '.wav':'audio/wav' };
     res.setHeader('content-type', types[path.extname(target)] || 'application/octet-stream'); res.end(await readFile(target));
   } catch { res.writeHead(500); res.end('Build unavailable. Run npm run build.'); }
-}).listen(port, '0.0.0.0', () => console.log(`BIKE TYSON ready at ${origin}`));
+}).listen(port, process.env.HOST || '127.0.0.1', () => console.log(`BIKE TYSON ready at ${origin}`));

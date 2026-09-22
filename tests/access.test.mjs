@@ -2,10 +2,26 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { generateKeyPairSync, sign } from 'node:crypto';
 import bs58 from 'bs58';
+import { parseSignInMessageText } from '@solana/wallet-standard-util';
 import { Authentication, MINT, PROGRAM, TOKEN2022, readAccess, verifyMint, decodeLock } from '../server/access.mjs';
 const { privateKey, publicKey } = generateKeyPairSync('ed25519');
 const wallet = bs58.encode(publicKey.export({ format: 'der', type: 'spki' }).subarray(-32));
 const origin = 'https://example.test';
+
+test('Phantom SIWS parser retains the nonce, origin and expiry as structured fields', () => {
+  const c = new Authentication().challenge(wallet, origin);
+  const parsed = parseSignInMessageText(c.message);
+  assert.ok(parsed);
+  assert.equal(parsed.domain, new URL(origin).host);
+  assert.equal(parsed.address, wallet);
+  assert.equal(parsed.uri, origin);
+  assert.equal(parsed.nonce, c.nonce);
+  assert.equal(parsed.chainId, 'solana:mainnet');
+  assert.equal(parsed.version, '1');
+  assert.equal(parsed.expirationTime, new Date(c.expiry).toISOString());
+  assert.equal(parsed.requestId, 'delivery-pass');
+  assert.equal(parsed.statement.includes('\n'), false);
+});
 test('wallet authentication rejects replay, altered origin, expired challenge and forged signatures', () => {
   const auth = new Authentication();
   const c = auth.challenge(wallet, origin, 1000); const signature = sign(null, Buffer.from(c.message), privateKey).toString('base64');
