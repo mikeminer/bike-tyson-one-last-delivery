@@ -1,3 +1,4 @@
+import { signatureErrorMessage } from './wallet-errors.mjs';
 export const MINT = 'CbyTNf7UPzvewHh4Zp6umogM2RWahhmGRJWLJnPwpump';
 type Provider = { isPhantom?: boolean; publicKey?: { toString(): string }; connect(): Promise<{ publicKey: { toString(): string } }>; disconnect(): Promise<void>; signMessage(bytes: Uint8Array, encoding: string): Promise<{ signature: Uint8Array }>; on(event: string, handler: (...args: any[]) => void): void };
 declare global { interface Window { phantom?: { solana?: Provider } } }
@@ -36,7 +37,7 @@ export class DeliveryPass {
       await this.pendingLogout;
       const challenge = await this.api('/api/auth/challenge', { wallet });
       if (generation !== this.generation) return;
-      const { signature } = await this.provider.signMessage(new TextEncoder().encode(challenge.message), 'utf8').catch(()=>{throw Error('Signature canceled or unavailable. Please try again.');});
+      const { signature } = await this.provider.signMessage(new TextEncoder().encode(challenge.message), 'utf8').catch(error=>{throw Error(signatureErrorMessage(error));});
       if (generation !== this.generation) return;
       await this.api('/api/auth/verify', { wallet, nonce: challenge.nonce, signature: btoa(String.fromCharCode(...signature)) });
       if (generation !== this.generation) return;
