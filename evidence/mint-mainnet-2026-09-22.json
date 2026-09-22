@@ -1,0 +1,51 @@
+{
+  "jsonrpc": "2.0",
+  "result": {
+    "context": {
+      "apiVersion": "4.3.0-rc.0",
+      "slot": 449431015
+    },
+    "value": {
+      "data": {
+        "parsed": {
+          "info": {
+            "decimals": 6,
+            "extensions": [
+              {
+                "extension": "metadataPointer",
+                "state": {
+                  "authority": null,
+                  "metadataAddress": "CbyTNf7UPzvewHh4Zp6umogM2RWahhmGRJWLJnPwpump"
+                }
+              },
+              {
+                "extension": "tokenMetadata",
+                "state": {
+                  "additionalMetadata": [],
+                  "mint": "CbyTNf7UPzvewHh4Zp6umogM2RWahhmGRJWLJnPwpump",
+                  "name": "BIKE TYSON",
+                  "symbol": "biketyson",
+                  "updateAuthority": null,
+                  "uri": "https://ipfs.io/ipfs/QmZ7fqTkyQYYUbmDWWbjSKi9gHUuGjMoedEcYWYxk9SnRG"
+                }
+              }
+            ],
+            "freezeAuthority": null,
+            "isInitialized": true,
+            "mintAuthority": null,
+            "supply": "961879853834857"
+          },
+          "type": "mint"
+        },
+        "program": "spl-token-2022",
+        "space": 404
+      },
+      "executable": false,
+      "lamports": 5253665720,
+      "owner": "TokenzQdBNbLqP5VEhdkAS6EPFLC1PHnBqCXEpPxuEb",
+      "rentEpoch": 18446744073709551615,
+      "space": 404
+    }
+  },
+  "id": 1
+}

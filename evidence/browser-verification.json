@@ -1,0 +1,54 @@
+{
+  "date": "2026-09-22T16:56:49.292Z",
+  "browser": "153.0.8010.12",
+  "physicalPhone": false,
+  "checks": [
+    "Desktop initial scene renders",
+    "No-wallet recovery preserves practice access",
+    "Keyboard steering and punch input work",
+    "Pause freezes simulation",
+    "Complete play-to-result loop",
+    "8-second replay exported from actual recorded run",
+    "Restart begins a fresh run",
+    "WebGL loss pauses safely",
+    "WebGL restoration permits explicit resume",
+    "Background return requires deliberate resume",
+    "390×844 portrait has no horizontal overflow",
+    "Touch jump changes simulation",
+    "Phone landscape resizes without horizontal overflow",
+    "Rejected message signature does not authenticate or unlock",
+    "Synthetic Phantom signature authenticates through real server; qualifying UI fixture unlocks special",
+    "Special night route starts with synthetic eligible pass",
+    "Account change revokes previous eligibility",
+    "Unavailable RPC UI fixture never unlocks special",
+    "No uncaught browser errors"
+  ],
+  "errors": [],
+  "run": {
+    "phase": "result",
+    "run": {
+      "t": 35.64999999999926,
+      "distance": 610.1825000000034,
+      "x": 4.15,
+      "y": 0,
+      "lean": -2.323309744612715e-138,
+      "roll": 0,
+      "punch": 0,
+      "speed": 17.3,
+      "dignity": 100,
+      "score": 3731.383333333305,
+      "multiplier": 3.75
+    },
+    "done": true,
+    "delivered": true,
+    "stats": {
+      "calls": 159,
+      "triangles": 160248,
+      "textures": 33
+    },
+    "recording": null,
+    "replayComplete": true,
+    "clipBytes": 513229,
+    "passEligible": false
+  }
+}

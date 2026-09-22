@@ -1,0 +1,15 @@
+{
+  "date": "2026-09-22T16:53:27.614Z",
+  "purpose": "Read-only RPC availability probe using a generated test public key; not user wallet or qualifying-lock evidence",
+  "access": {
+    "eligible": false,
+    "totalRaw": "0",
+    "nextCheckAt": 1790096040,
+    "checkedAt": 1790096009,
+    "wallet": "ztwZ9oEkKneFAzqYwt3MNbzoyKupFDcF2c7kEoCoEPy",
+    "mint": "CbyTNf7UPzvewHh4Zp6umogM2RWahhmGRJWLJnPwpump",
+    "source": "Solana RPC · DevFridge program accounts",
+    "slot": 449438326
+  },
+  "status": "available"
+}
