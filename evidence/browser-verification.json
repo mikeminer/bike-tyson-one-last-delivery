@@ -1,5 +1,6 @@
 {
-  "date": "2026-09-22T18:15:36.916Z",
+  "date": "2026-09-22T18:31:18.104Z",
+  "baseURL": "https://bike-tyson-mikeminer.vercel.app",
   "browser": "153.0.8010.12",
   "physicalPhone": false,
   "checks": [
@@ -27,24 +28,24 @@
   "run": {
     "phase": "result",
     "run": {
-      "t": 27.76666666666637,
-      "distance": 418.2675000000089,
-      "x": 3.3833333333333337,
+      "t": 23.233333333333295,
+      "distance": 339.8408333333354,
+      "x": 3.616666666666667,
       "y": 0,
-      "lean": -1.228321731399611e-115,
+      "lean": -2.6891612409037835e-96,
       "roll": 0,
       "punch": 0,
       "speed": 17.3,
       "dignity": 0,
-      "score": 288.28333333332824,
-      "multiplier": 1.0499999999999998
+      "score": 220.4166666666636,
+      "multiplier": 1
     },
     "done": true,
     "delivered": false,
     "stats": {
-      "calls": 197,
-      "triangles": 336322,
-      "textures": 40
+      "calls": 183,
+      "triangles": 334994,
+      "textures": 36
     },
     "audio": {
       "state": "running",
@@ -67,15 +68,15 @@
       "musicPlaying": false,
       "played": {
         "punch": 1,
-        "crash": 8,
-        "ramp": 2,
+        "crash": 9,
+        "ramp": 1,
         "finish": 1
       },
       "outputRms": 0
     },
     "recording": null,
     "replayComplete": true,
-    "clipBytes": 968095,
+    "clipBytes": 763441,
     "passEligible": false
   }
 }

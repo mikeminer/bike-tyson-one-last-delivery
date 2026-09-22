@@ -14,9 +14,12 @@
 
 **Disclosures:** no early withdrawal; 2% redemption fee for PASTA buy-and-burn; separate network costs; non-PASTA redemption requires an executable Jupiter route. The mint's route is not verified, so the game does not offer creation of new locks. Program, mint decimals and extensions must be reviewed again before release.
 
-## Evidence available locally
+## Public project and evidence
 
-- Playable local server: http://localhost:4173 . This is not a public showcase URL.
+- Public playable game: https://bike-tyson-mikeminer.vercel.app/ . Free practice requires no wallet or payment.
+- Public source: https://github.com/mikeminer/bike-tyson-one-last-delivery . The gallery metadata pins a full immutable commit.
+- Public author/contact: mikeminer — https://github.com/mikeminer (explicitly chosen by the user).
+- Demo hub: https://bike-tyson-mikeminer.vercel.app/demo/ . Desktop and mobile browser recordings, labelled synthetic gate flow and an exported Funny Finish.
 - Source, pinned dependencies and setup: README.md and package-lock.json.
 - AI contribution log: BUILD_LOG.md.
 - Tests and limitations: VERIFICATION.md and evidence/browser-verification.json.
@@ -25,12 +28,18 @@
 - Mainnet mint observation: evidence/mint-mainnet-2026-09-22.json.
 - Art/font/helper provenance: ASSETS.md.
 
-## Still needed before submission
+## Readiness and limitations
 
-- User's public team alias/contact and review of branding/assets.
-- Confirmation of redistribution terms for the supplied skill helper before public source publication.
-- Public source repository, immutable commit URL and public HTTPS game URL.
-- Physical phone and real Phantom desktop/mobile results; a short showcase demo showing desktop, mobile and honestly labelled gate states.
-- Current gallery example schema, validator and PR template fetched at submission time. Do not invent registry metadata or evidence links.
+The public showcase is a prototype. Scores are local and unverified; no ranked rewards or on-chain score writes. Wallet tests use ephemeral generated test keys and explicitly labelled lock fixtures; no real user wallet was signed and no funds moved. Mobile coverage is Chromium emulation, not physical-phone/Phantom-mobile testing. The exact mint was observed on mainnet; the current public RPC is rechecked for live eligibility and can rate-limit or reject filtered account queries. Such failures do not unlock the special mode. Redemption routing remains unverified and no locking flow is offered.
 
-No showcase PR has been opened. When requested, the agent handles GitHub authentication guidance if needed, the fork, branch, validated metadata-only change and PR to `mikeminer/devfridge:master`. Owner review, merge and a successful production deployment publish the gallery card. Dates, prizes and final competition eligibility remain to be announced.
+The Vercel API uses the same server-side authentication and lock verifier as local Node. Nonces, sessions and rate budgets are process-local: cold starts or a different instance can require a fresh sign-in. This fails closed, but a shared persistent store and distributed rate limiting are needed before treating the service as a production authentication system. No independent security audit is claimed.
+
+The character is based on the user's supplied reference, with AI-generated face and skin textures. This does not establish a scanned/licensed likeness or independently verified rights in that reference. Asset provenance, font licences and retained helper attribution are documented in ASSETS.md for owner review. The game has no voice clone.
+
+## AI contributions and prior work
+
+The human supplied the concept, reference image, token mint, threshold and active-lock rule; then reviewed and steered the character, English language and audio direction. Codex implemented the game, server verifier, tests, models, shaders, deployment adapter and this submission. Built-in image generation made the documented face/skin textures; Gemini composed the retained numeric music and effect recipes. Lyria audio generation failed and no Lyria recording is claimed. The official DevFridge 1.4.0 exact-lock helper is pre-existing code with attribution. The existing DevFridge Solana program is reused, not redeployed. Earlier iterations and actual verification are preserved in the build log.
+
+## Gallery publication
+
+This package is submitted for owner review through a metadata-only PR targeting mikeminer/devfridge:master. A successful submission is not gallery publication. Owner review, merge and successful gallery deployment publish the entry. Dates, prizes and final competition eligibility remain to be announced. The agent does not self-approve or merge this proposal.

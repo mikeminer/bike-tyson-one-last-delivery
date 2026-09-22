@@ -1,0 +1,7 @@
+node_modules
+.git
+.gitnexus
+evidence
+work
+.env
+.env.*

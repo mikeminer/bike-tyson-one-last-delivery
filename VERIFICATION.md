@@ -64,3 +64,9 @@ The continuous body has 22,514 vertices and 45,028 triangles and is baked offlin
 ## Surface detail and contact-shadow verification
 
 Production build and shader-aware desktop/portrait preview passed with no console errors. All 19 full browser checks passed, including play/replay/export, touch/landscape, WebGL loss/restoration and synthetic night-access fixtures. Desktop, phone portrait and the night scene were visually inspected. Idle rendering reports 91 draw calls, 321,670 triangles including shadow passes and 18 textures. Four production start/quit cycles held 19 textures each, without resource growth. The 360×640 replay decoded with audible audio (RMS 0.03657, peak 0.38188), no browser errors and no external page requests. No physical-phone benchmark is claimed.
+
+## Public HTTPS submission verification
+
+On 2026-09-22, all 19 browser checks passed against https://bike-tyson-mikeminer.vercel.app (see evidence/browser-verification.json, baseURL field). This includes free practice, a complete run and export, touch/landscape, cancellation recovery, genuine Ed25519 verification of an ephemeral synthetic key, labelled qualifying-lock fixtures and RPC-failure denial. No real Phantom extension/mobile wallet, human mainnet signature, deposit or token transaction was used. The updated shared API also retains all 11 passing unit checks.
+
+Public recordings are served at /demo/: desktop.webm (complete automated run), mobile.webm (phone emulation and orientation), gate-fixture.webm (explicit synthetic label) and funny-finish.webm (actual exported replay with audio). The full-screen test recordings are visual recordings; the Funny Finish has the captured game audio. Signed-in browser data and personal credentials are not part of the test profiles. Physical-phone performance, durable multi-instance sessions, independent asset rights and a security audit remain unverified.

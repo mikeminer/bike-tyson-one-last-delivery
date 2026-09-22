@@ -3,14 +3,16 @@ import { generateKeyPairSync, sign } from 'node:crypto';
 import bs58 from 'bs58';
 import { writeFile } from 'node:fs/promises';
 import assert from 'node:assert/strict';
+const baseURL=process.env.TEST_BASE_URL || 'http://localhost:4173';
+const recording=process.env.RECORD_DEMO==='1'?{recordVideo:{dir:'evidence/recordings',size:{width:1280,height:900}}}:{};
 const executablePath = process.env.CHROMIUM_PATH;
 const browser = await chromium.launch({ executablePath, headless: true, args: ['--enable-unsafe-swiftshader'] });
-const context = await browser.newContext({ viewport: { width: 1440, height: 1000 }, acceptDownloads: true });
+const context = await browser.newContext({ viewport: { width: 1440, height: 1000 }, acceptDownloads: true,...recording });
 const page = await context.newPage();const errors=[];page.on('pageerror',e=>errors.push(e.message));
-const report={date:new Date().toISOString(),browser:await browser.version(),physicalPhone:false,checks:[],errors};
+const report={date:new Date().toISOString(),baseURL,browser:await browser.version(),physicalPhone:false,checks:[],errors};
 const check=(name)=>{report.checks.push(name);console.log('PASS',name);};
 try {
-  await page.goto('http://localhost:4173');await page.locator('#loading').waitFor({state:'detached'});await page.waitForFunction(()=>window.__BIKE_DIAGNOSTICS?.().stats.calls>0);
+  await page.goto(baseURL);await page.locator('#loading').waitFor({state:'detached'});await page.waitForFunction(()=>window.__BIKE_DIAGNOSTICS?.().stats.calls>0);
   await page.screenshot({path:'evidence/desktop-ready.png'});check('Desktop initial scene renders');assert.equal(await page.locator('html').getAttribute('lang'),'en');assert.equal(await page.getByRole('button',{name:'ACCEPT THE DELIVERY'}).count(),1);
   await page.getByRole('button',{name:'Delivery Pass',exact:true}).click();await page.getByRole('button',{name:'CONNECT PHANTOM'}).click();
   await page.getByText('Phantom not detected.',{exact:false}).waitFor();check('No-wallet recovery preserves practice access');
@@ -39,22 +41,22 @@ try {
   await page.evaluate(()=>{delete document.hidden;document.dispatchEvent(new Event('visibilitychange'));});assert.equal(await page.evaluate(()=>window.__BIKE_DIAGNOSTICS().phase),'paused');check('Background return requires deliberate resume');
   await page.locator('#quit').click();
   await context.close();
-  const mobileContext=await browser.newContext({viewport:{width:390,height:844},isMobile:true,hasTouch:true,deviceScaleFactor:1});const mobile=await mobileContext.newPage();mobile.on('pageerror',e=>errors.push(e.message));
-  await mobile.goto('http://localhost:4173');await mobile.locator('#loading').waitFor({state:'detached'});await mobile.waitForTimeout(500);
+  const mobileContext=await browser.newContext({viewport:{width:390,height:844},isMobile:true,hasTouch:true,deviceScaleFactor:1,...recording});const mobile=await mobileContext.newPage();mobile.on('pageerror',e=>errors.push(e.message));
+  await mobile.goto(baseURL);await mobile.locator('#loading').waitFor({state:'detached'});await mobile.waitForTimeout(500);
   await mobile.screenshot({path:'evidence/mobile-ready.png'});assert.equal(await mobile.evaluate(()=>document.documentElement.scrollWidth>innerWidth),false);check('390×844 portrait has no horizontal overflow');
   await mobile.locator('#start').tap();await mobile.locator('[data-control=jump]').tap();await mobile.waitForTimeout(130);assert.ok((await mobile.evaluate(()=>window.__BIKE_DIAGNOSTICS().run.y))>0);check('Touch jump changes simulation');
   const button=mobile.locator('[data-control=right]'),bounds=await button.boundingBox(),cdp=await mobileContext.newCDPSession(mobile);
   await cdp.send('Input.dispatchTouchEvent',{type:'touchStart',touchPoints:[{x:bounds.x+bounds.width/2,y:bounds.y+bounds.height/2}]});await mobile.waitForTimeout(200);await cdp.send('Input.dispatchTouchEvent',{type:'touchEnd',touchPoints:[]});
   await mobile.locator('[data-control=punch]').tap();await mobile.screenshot({path:'evidence/mobile-playing.png'});
   await mobile.setViewportSize({width:844,height:390});await mobile.waitForTimeout(300);await mobile.screenshot({path:'evidence/mobile-landscape.png'});assert.equal(await mobile.evaluate(()=>document.documentElement.scrollWidth>innerWidth),false);check('Phone landscape resizes without horizontal overflow');
-  await mobileContext.close();
-  const authContext=await browser.newContext({viewport:{width:1000,height:800}});const authPage=await authContext.newPage();
+  await mobileContext.close();if(recording.recordVideo)await mobile.video().saveAs('public/demo/mobile.webm');
+  const authContext=await browser.newContext({viewport:{width:1000,height:800},...recording});const authPage=await authContext.newPage();
   const {privateKey,publicKey}=generateKeyPairSync('ed25519');const wallet=bs58.encode(publicKey.export({format:'der',type:'spki'}).subarray(-32));
   await authPage.exposeFunction('testSign',message=>Array.from(sign(null,Buffer.from(message),privateKey)));
   await authPage.addInitScript(({wallet})=>{const callbacks={};window.rejectNextTestSignature=true;window.phantom={solana:{isPhantom:true,connect:async()=>({publicKey:{toString:()=>wallet}}),disconnect:async()=>callbacks.disconnect?.(),signMessage:async bytes=>{if(window.rejectNextTestSignature){window.rejectNextTestSignature=false;throw Error('Test signature canceled');}return{signature:new Uint8Array(await window.testSign(Array.from(bytes)))}} ,on:(name,fn)=>callbacks[name]=fn}};window.testAccountChange=()=>callbacks.accountChanged?.();},{wallet});
   // These are explicitly synthetic UI fixtures. Real server authentication still verifies the generated test key.
   await authPage.route('**/api/access',route=>route.fulfill({json:{eligible:true,totalRaw:'1000000000',nextCheckAt:Math.floor(Date.now()/1000)+30,checkedAt:Math.floor(Date.now()/1000),wallet,source:'SYNTHETIC UI TEST FIXTURE',slot:123}}));
-  await authPage.goto('http://localhost:4173');await authPage.locator('#loading').waitFor({state:'detached'});await authPage.locator('#pass-button').click();await authPage.locator('#connect').click();await authPage.locator('#authenticate').click();await authPage.getByText('Signature canceled or unavailable. Please try again.',{exact:true}).waitFor();assert.equal(await authPage.locator('#special').isVisible(),false);check('Rejected message signature does not authenticate or unlock');
+  await authPage.goto(baseURL);await authPage.locator('#loading').waitFor({state:'detached'});await authPage.evaluate(()=>{const label=document.createElement('div');label.textContent='SYNTHETIC TEST WALLET / LOCK FIXTURE � NOT A MAINNET TRANSACTION';label.style.cssText='position:fixed;top:88px;left:10px;background:#e5ed38;color:#183a35;padding:8px;z-index:100;font:700 11px Arial';document.body.appendChild(label);});await authPage.locator('#pass-button').click();await authPage.locator('#connect').click();await authPage.locator('#authenticate').click();await authPage.getByText('Signature canceled or unavailable. Please try again.',{exact:true}).waitFor();assert.equal(await authPage.locator('#special').isVisible(),false);check('Rejected message signature does not authenticate or unlock');
   await authPage.locator('#authenticate').click();await authPage.locator('#special').waitFor({state:'visible'});check('Synthetic Phantom signature authenticates through real server; qualifying UI fixture unlocks special');
   await authPage.locator('#special').click();await authPage.waitForFunction(()=>window.__BIKE_DIAGNOSTICS().phase==='playing');
   await authPage.evaluate(()=>{const label=document.createElement('div');label.id='fixture-label';label.textContent='SYNTHETIC TEST PASS · NO REAL WALLET OR LOCK';label.style.cssText='position:fixed;bottom:38px;left:20px;background:#e5ed38;color:#183a35;padding:12px;z-index:20;font:700 12px Arial';document.body.appendChild(label);});
@@ -62,6 +64,6 @@ try {
   await authPage.locator('#pass-button').click();
   await authPage.evaluate(()=>window.testAccountChange());await authPage.locator('#special').waitFor({state:'hidden'});check('Account change revokes previous eligibility');
   await authPage.locator('#connect').click();await authPage.unroute('**/api/access');await authPage.route('**/api/access',route=>route.fulfill({status:503,json:{error:'RPC busy (429): try again in 30 seconds.',eligible:false,status:'unavailable'}}));await authPage.locator('#authenticate').click();await authPage.getByText('RPC busy (429)',{exact:false}).waitFor();assert.equal(await authPage.locator('#special').isVisible(),false);check('Unavailable RPC UI fixture never unlocks special');
-  await authContext.close();assert.deepEqual(errors,[]);check('No uncaught browser errors');
+  await authContext.close();if(recording.recordVideo)await authPage.video().saveAs('public/demo/gate-fixture.webm');assert.deepEqual(errors,[]);check('No uncaught browser errors');
 } catch(error){report.failure=error.stack;console.error(error);process.exitCode=1;}
-finally{await writeFile('evidence/browser-verification.json',JSON.stringify(report,null,2));await browser.close();}
+finally{await context.close();if(recording.recordVideo)await page.video().saveAs('public/demo/desktop.webm');await writeFile('evidence/browser-verification.json',JSON.stringify(report,null,2));await browser.close();}

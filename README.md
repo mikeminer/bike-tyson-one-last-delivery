@@ -4,6 +4,8 @@ Ride. Punch. Crash. Deliver.
 
 A playable Three.js arcade delivery game with an English interface. Its muscle bicycle is modeled after the visual reference supplied by the user: a human torso forms the frame, arms meet the front axle, feet pedal, handlebars emerge beside the head, and the saddle sits above the back. The updated character uses continuous anatomical geometry, skeletal deformation, a sculpted head and textured PBR materials. It remains a reference-based procedural game model rather than a 3D scan. Face and skin textures were generated with the built-in image generator; see ASSETS.md. Environment geometry was created for this project. Gemini composed two music loops and eight layered comic effects, rendered locally with Web Audio; Lyria recording attempts failed. Music and effects are included in replay exports. No voice cloning is used.
 
+Public game: https://bike-tyson-mikeminer.vercel.app/ · Demo: https://bike-tyson-mikeminer.vercel.app/demo/ · Author/contact: https://github.com/mikeminer
+
 ## Play
 
 Reach the delivery arch within 45 seconds before dignity reaches zero. The bicycle accelerates automatically. Use arrows/A/D to steer, Space/Up to jump, X to punch. On phones use the visible touch buttons. Escape/P pauses. Smash absurd obstacles, jump ramps and earn a laugh multiplier from near misses. The best recorded incident becomes an automatic eight-second slow-motion replay.
@@ -73,6 +75,10 @@ Set `CHROMIUM_PATH` only to reuse a locally installed Chromium. Browser tests re
 
 ## Scope and publication
 
-The current playable scope is One Last Delivery plus the pass-gated Midnight Dispatch variation. Ghost races/Bike Royale, community content submission, weekly moderation, prizes, server-authoritative ranked scores and opt-in on-chain records are future work, not implemented claims. The source is local and no public deployment or showcase PR has been created. On a submission request the agent prepares current registry metadata, validates it and handles the fork, branch and PR to `mikeminer/devfridge:master`. Owner review, merge and successful deployment publish the gallery entry. Dates, prizes and final competition eligibility remain to be announced.
+The current playable scope is One Last Delivery plus the pass-gated Midnight Dispatch variation. Ghost races/Bike Royale, community content submission, weekly moderation, prizes, server-authoritative ranked scores and opt-in on-chain records are future work, not implemented claims. The game is deployed separately on Vercel and the source is published under mikeminer/bike-tyson-one-last-delivery. Gallery review is a separate metadata-only PR; this does not imply gallery publication. On a submission request the agent prepares current registry metadata, validates it and handles the fork, branch and PR to `mikeminer/devfridge:master`. Owner review, merge and successful deployment publish the gallery entry. Dates, prizes and final competition eligibility remain to be announced.
 
 Production review must address the single-process in-memory nonce/session store, reverse-proxy rate limiting, persistent sessions if scaling, RPC availability, current program schema/upgrade evidence, real wallet/device coverage and asset/branding approval. No independent security audit is claimed.
+
+## Vercel hosting
+
+`api/index.mjs` adapts the shared `server/api.mjs` handler. Set APP_ORIGIN to the canonical public HTTPS origin when changing domains. Nonces/sessions/rate limits are per-instance and fail closed when lost; persistent shared storage is required for reliable scaled authentication. Free practice remains available during wallet/RPC failures. Vercel deployment metadata and local environment files are excluded from source.
