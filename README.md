@@ -29,7 +29,7 @@ npm run build
 npm start
 ```
 
-`npm start` serves the built frontend and API. Set environment variables as described in `.env.example`; that file is a template, not automatically loaded. For public hosting set `APP_ORIGIN` to the exact HTTPS origin and `SOLANA_RPC_URL` to a trusted mainnet RPC supporting filtered `getProgramAccounts`. Avoid placing RPC credentials in the client bundle. HTTPS is necessary for dependable mobile wallet and sharing capabilities. The server listens on all interfaces for local device testing; wallet authentication accepts only the configured origin.
+`npm start` serves the built frontend and API. Set environment variables as described in `.env.example`; that file is a template, not automatically loaded. For public hosting set `APP_ORIGIN` to the exact HTTPS origin and `SOLANA_RPC_URL` to a trusted mainnet RPC supporting filtered `getProgramAccounts`. Avoid placing RPC credentials in the client bundle. HTTPS is necessary for dependable mobile wallet and sharing capabilities. The server defaults to loopback; set `HOST=0.0.0.0` only when you need local device testing; wallet authentication accepts only the configured origin.
 
 ## Delivery Pass
 
@@ -41,7 +41,9 @@ npm start
 - Wallet connection is separate from nonce-based sign-in. Signatures are verified server-side. Eligibility is checked against fresh program accounts, separate from scores.
 - Reuses DevFridge program `9RY54dNPYTzDyh3TfFqDdt2b2KMM56KW1tw9erRTGQo6`. No new contract or score registration transaction is deployed.
 
-Before any future locking flow: no early withdrawal; after expiry redemption carries a 2% fee for PASTA buy-and-burn, plus network costs. Non-PASTA redemption requires an executable Jupiter route. This project's mint route has not been verified, so creation of new locks is deliberately unavailable. Existing locks may be inspected. The game does not charge a duplicate protocol fee.
+The Delivery Pass offers **Lock on DevFridge** before wallet connection or eligibility: it opens `https://devfridge.cool/?mint=CbyTNf7UPzvewHh4Zp6umogM2RWahhmGRJWLJnPwpump#fridge` with the exact mint preselected. Buy/Copy CA and an explicit Phantom mobile deep link are also available. The player chooses the amount and unlock date and confirms the transaction on DevFridge, then returns to sign in or recheck locks with the same wallet. Foreground return refreshes authenticated access; opening the link alone never grants access.
+
+Before the link, the game discloses no early withdrawal, the 2% redemption fee for PASTA buy-and-burn, network costs and the need for a Jupiter redemption route. This game's link does not certify present or future route availability. The game does not charge a duplicate protocol fee or construct/sign lock transactions.
 
 The official SDK API implementation can turn a failed depositor lookup into an empty array. To avoid interpreting an RPC failure as zero holdings, authoritative access here uses direct, filtered RPC reads against the documented DevFridge account schema. The bundled official BigInt evaluator computes policy boundaries. See `server/access.mjs`, `src/timelock-gate.mjs`, and `VERIFICATION.md`.
 
