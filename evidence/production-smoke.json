@@ -1,28 +1,28 @@
 {
-  "date": "2026-09-22T18:05:51.965Z",
+  "date": "2026-09-22T18:17:08.796Z",
   "production": true,
   "errors": [],
   "externalRequests": [],
   "textureCounts": [
-    17,
-    17,
-    17,
-    17
+    19,
+    19,
+    19,
+    19
   ],
   "productionLoads": true,
   "repeatRunResourcesBounded": true,
   "exportedAudio": {
-    "duration": 7.98,
+    "duration": 7.92,
     "channels": 2,
-    "rms": 0.042972738055694425,
-    "peak": 0.40712377429008484
+    "rms": 0.03656928057363411,
+    "peak": 0.3818805515766144
   },
   "exportContainsAudibleTrack": true,
   "recording": {
     "width": 360,
     "height": 640,
-    "duration": 7.921911,
-    "currentTime": 1.019384,
+    "duration": 7.861999,
+    "currentTime": 1.132578,
     "decodedFrames": 14
   },
   "passed": true

@@ -27,3 +27,5 @@ Local preview is available; public hosting/source repository, public team alias/
 ## Character realism revision
 
 Continuous muscular anatomy replaces overlapping limb primitives. A 13-bone skin deforms through pedal and punch IK, with a closed sculpted head and blended face projection. Warm brown skin albedo adds pores and color variation; PBR microdetail distinguishes skin, rubber, leather and metal. This remains a reference-based procedural game model rather than a scanned replica.
+
+The second surface pass adds restrained vascular color and original winged-wheel ink, skin micro-normal/roughness variation, patterned road-tire tread, pebbled leather, saddle stitching/rails and finer mechanical details. Asphalt has aggregate and fine cracks. Tire contact shadows track the wheels and fade during jumps. These are bounded browser-game details; no scanned character or physical-phone performance claim is made.

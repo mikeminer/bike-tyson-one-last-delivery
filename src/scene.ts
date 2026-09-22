@@ -3,6 +3,7 @@ import { RoundedBoxGeometry } from 'three/addons/geometries/RoundedBoxGeometry.j
 import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
 import { mergeGeometries } from 'three/addons/utils/BufferGeometryUtils.js';
 import { makeReferenceBike } from './character';
+import { asphaltTexture } from './surface-textures';
 import { random } from './simulation.mjs';
 
 type Frame = { t: number; distance: number; x: number; y: number; lean: number; roll: number; punch: number; speed: number };
@@ -42,12 +43,9 @@ function sign(text: string, w: number, h: number, bg?: string, fg?: string) {
   return new T.Mesh(new T.PlaneGeometry(w, h), new T.MeshStandardMaterial({ map: textTexture(text, bg, fg), roughness: .75, side: T.DoubleSide }));
 }
 function roadMaterial() {
-  const size = 256, canvas = document.createElement('canvas'); canvas.width = canvas.height = size;
-  const ctx = canvas.getContext('2d')!, rng = random(777); ctx.fillStyle = '#666e67'; ctx.fillRect(0, 0, size, size);
-  for (let i = 0; i < 12000; i++) { const light = 65 + Math.floor(rng() * 65); ctx.fillStyle = `rgba(${light},${light + 7},${light},.4)`; ctx.fillRect(rng() * size, rng() * size, 1, 1); }
-  const map = new T.CanvasTexture(canvas); map.colorSpace = T.SRGBColorSpace; map.wrapS = map.wrapT = T.RepeatWrapping; map.repeat.set(3, 190);
+  const map=asphaltTexture();
   const bump = map.clone(); bump.colorSpace = T.NoColorSpace; bump.needsUpdate = true;
-  return new T.MeshStandardMaterial({ map, bumpMap: bump, bumpScale: .025, roughness: .98 });
+  return new T.MeshStandardMaterial({ map, bumpMap: bump, bumpScale: .012, roughness: .98 });
 }
 function mergeStatic(group: T.Group) {
   group.updateMatrixWorld(true);
@@ -101,7 +99,7 @@ export class CityScene {
   scene=new T.Scene();camera=new T.PerspectiveCamera(45,1,.1,220);
   bike=makeReferenceBike();sun=new T.DirectionalLight(0xffe2bb,3.3);headlight=new T.SpotLight(0xffefbf,110,42,.52,.8,1.6);ambient=new T.HemisphereLight(0xe5f0df,0x817050,1.2);
   obstacles=new Map<number,T.Group>(); effects: T.Group;
-  shadow: T.Mesh; frame?: Frame; mode='ready'; width=1;height=1;
+  contacts:T.Mesh[]=[];shadow: T.Mesh; frame?: Frame; mode='ready'; width=1;height=1;
   reduced=matchMedia('(prefers-reduced-motion: reduce)').matches;needsFrame=true;
   constructor(public canvas: HTMLCanvasElement) {
     this.renderer=new T.WebGLRenderer({canvas,antialias:true,alpha:false,powerPreference:'high-performance'});
@@ -151,6 +149,10 @@ export class CityScene {
     this.scene.add(this.bike.root);
     const shadowCanvas=document.createElement('canvas');shadowCanvas.width=shadowCanvas.height=64;const ctx=shadowCanvas.getContext('2d')!,grad=ctx.createRadialGradient(32,32,2,32,32,31);grad.addColorStop(0,'rgba(16,35,30,.55)');grad.addColorStop(1,'rgba(16,35,30,0)');ctx.fillStyle=grad;ctx.fillRect(0,0,64,64);
     this.shadow=new T.Mesh(new T.PlaneGeometry(3,4.3),new T.MeshBasicMaterial({map:new T.CanvasTexture(shadowCanvas),transparent:true,depthWrite:false}));this.shadow.rotation.x=-Math.PI/2;this.shadow.position.y=.012;this.scene.add(this.shadow);
+    for(let i=0;i<2;i++){
+      const contact=new T.Mesh(new T.PlaneGeometry(.36,.64),new T.MeshBasicMaterial({map:(this.shadow.material as T.MeshBasicMaterial).map,color:0x081411,transparent:true,depthWrite:false,opacity:.95}));
+      contact.rotation.x=-Math.PI/2;this.contacts.push(contact);this.scene.add(contact);
+    }
     this.effects=new T.Group();for(let i=0;i<16;i++)this.effects.add(sphere(.1,mats.blue,6));this.scene.add(this.effects);this.effects.visible=false;
     this.resize();new ResizeObserver(()=>this.resize()).observe(canvas);
   }
@@ -168,11 +170,19 @@ export class CityScene {
     (this.scene.background as T.Color).set(night?0x19333b:0xc5dcd0);(this.scene.fog as T.Fog).color.copy(this.scene.background as T.Color);
     this.sun.intensity=night?.5:2.6;this.ambient.intensity=night?.45:1.2;this.headlight.visible=night;
     this.headlight.position.set(frame.x,2.4+frame.y,-distance-.8);this.headlight.target.position.set(frame.x,0,-distance-18);
-    this.bike.root.position.set(frame.x,frame.y,-distance);this.bike.root.rotation.set(frame.roll*.15,0,frame.lean+frame.roll);
+    this.bike.root.position.set(frame.x,frame.y-.048,-distance);this.bike.root.rotation.set(frame.roll*.15,0,frame.lean+frame.roll);
     this.bike.root.scale.setScalar(mode==='ready'?1.3:1);
     if(mode==='ready'){this.bike.root.rotation.y=3.15;this.bike.root.rotation.z=-.07;}
     this.bike.animate(distance,frame.punch,this.reduced?0:clock);
     this.shadow.position.set(frame.x,.012,-distance);(this.shadow.material as T.MeshBasicMaterial).opacity=Math.max(.15,1-frame.y*.15);
+    this.bike.root.updateMatrixWorld(true);
+    this.contacts.forEach((contact,i)=>{
+      const center=this.bike.wheels[i].getWorldPosition(new T.Vector3()),scale=mode==='ready'?1.3:1;
+      const height=Math.max(0,center.y-.877*scale+.045);
+      contact.position.set(center.x,-.039,center.z);contact.rotation.z=-(mode==='ready'?3.15:0);
+      contact.scale.setScalar(scale*(1+Math.min(2,height)*.4));
+      (contact.material as T.MeshBasicMaterial).opacity=.95*Math.exp(-height*3.5);
+    });
     for(const o of obstacles){const g=this.obstacles.get(o.id)!;const age=o.hit<0?-1:frame.t-o.hit;
       g.visible=Math.abs(o.z-distance)<135 && (age<0||age<3.5);g.position.set(o.x,0,-o.z);g.rotation.set(0,0,0);g.scale.setScalar(1);
       if(age>=0 && o.effect==='punch'){g.position.y=age*7-age*age*2;g.position.x+=age*(o.x<0?-3:3);g.rotation.set(age*3,age*2,age*2);if(o.type==='pigeon')g.scale.setScalar(1+Math.min(age,1.5));}

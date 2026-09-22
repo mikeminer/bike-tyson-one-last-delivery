@@ -24,3 +24,7 @@ Barlow and Barlow Condensed by Jeremy Tribby, distributed under SIL Open Font Li
 Three.js (MIT), Vite (MIT), TypeScript (Apache-2.0), bs58 (MIT), Playwright (Apache-2.0) and type definitions retain their package licences in the dependency tree. Exact versions/integrity values are pinned in package-lock.json.
 
 `src/timelock-gate.mjs` and its tests originate from the official DevFridge Game Builder 1.4.0 package, explicitly supplied as an integration helper. The distributed skill archive did not include a standalone licence. Attribution is retained here; confirm the helper's redistribution terms with DevFridge before public source publication. This project reads the existing program and does not copy or redeploy its contract implementation. Its own decoder implements documented account offsets rather than importing DevFridge application source.
+
+## Additional surface patterns
+
+`src/surface-textures.ts` creates original local canvas patterns for pebbled leather, road-tire grooves, asphalt aggregate and cracks, and a winged bicycle-wheel tattoo emblem. These are source-authored patterns, not photographs or scanned materials. Tattoo masks use rest-space projection and skin color modulation; pore height/roughness variation comes from the existing generated skin albedo sample. Two contact-shadow planes reuse the existing source-generated shadow texture. Tire sidewalls, valves, saddle stitching and rails are source geometry. No external runtime asset requests were added.

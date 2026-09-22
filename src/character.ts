@@ -1,5 +1,6 @@
 import * as T from 'three';
 import { skinMaterial, grainTexture, loadAnatomy } from './skin-material';
+import { leatherGrain, treadTexture } from './surface-textures';
 import { limbs } from './anatomy.mjs';
 import { mergeGeometries } from 'three/addons/utils/BufferGeometryUtils.js';
 
@@ -26,8 +27,9 @@ function curvedRod(parent: T.Object3D, points: V[], radius: number, mat = metal)
 export function makeReferenceBike() {
   const root=new T.Group(),wheels:T.Group[]=[],bodySkin=skinMaterial(),headSkin=skinMaterial(true),skin=bodySkin.material;root.name='Sculpted muscle bicycle';
   const pores=grainTexture(7);skin.bumpMap=pores;skin.bumpScale=.0025;headSkin.material.bumpMap=pores;headSkin.material.bumpScale=.001;
-  rubber.bumpMap=grainTexture(12);rubber.bumpScale=.002;leather.bumpMap=grainTexture(5);leather.bumpScale=.008;
+  rubber.bumpMap=grainTexture(12);rubber.bumpScale=.002;leather.bumpMap=leatherGrain();leather.bumpScale=.004;leather.roughness=.64;
   metal.roughnessMap=grainTexture(3);metal.roughness=.48;
+  const tireRubber=rubber.clone();tireRubber.bumpMap=treadTexture();tireRubber.bumpScale=.004;tireRubber.roughness=.86;
   const bones:T.Bone[]=Array.from({length:13},()=>new T.Bone());
   const rig=limbs.map((l,i)=>{const a=v(l.start as V),b=v(l.middle as V),c=v(l.end as V),upper=bones[1+i*3],lower=bones[2+i*3],tip=bones[3+i*3];
     upper.position.copy(a);lower.position.copy(b);tip.position.copy(c);bones[0].add(upper,lower,tip);
@@ -35,9 +37,12 @@ export function makeReferenceBike() {
   });
   for(const z of [-1.35,1.35]){
     const wheel=new T.Group();wheel.position.set(0,.88,z);root.add(wheel);
-    for(const [radius,tube,mat] of [[.815,.062,rubber],[.754,.028,metal],[.73,.012,chrome]] as const){const tyre=mesh(wheel,new T.TorusGeometry(radius,tube,10,56),mat);tyre.rotation.y=Math.PI/2;}
+    for(const [radius,tube,mat] of [[.815,.062,tireRubber],[.754,.028,metal],[.73,.012,chrome]] as const){const tyre=mesh(wheel,new T.TorusGeometry(radius,tube,12,80),mat);tyre.rotation.y=Math.PI/2;}
     rod(wheel,[-.15,0,0],[.15,0,0],.071,metal);
     for(let n=0;n<24;n++){const angle=n/24*Math.PI*2;rod(wheel,[n%2?-.075:.075,0,0],[0,Math.sin(angle)*.738,Math.cos(angle)*.738],.006,chrome);}
+    // Valve stems and a fine sidewall bead remain visible in the close-up silhouette.
+    rod(wheel,[0,.70,0],[0,.748,0],.012,metal);
+    for(const side of [-1,1]){const bead=mesh(wheel,new T.TorusGeometry(.802,.003,4,80),metal,[side*.055,0,0]);bead.rotation.y=Math.PI/2;}
     wheels.push(wheel);
   }
   const head=new T.Group();head.position.set(0,2.94,-1.15);root.add(head);
@@ -74,6 +79,11 @@ export function makeReferenceBike() {
   rod(root,[0,2.37,.86],[0,2.73,.93],.072);
   const saddle=ellipsoid(root,[0,2.79,.84],[.31,.10,.42],leather);saddle.rotation.x=-.08;
   ellipsoid(root,[0,2.775,.48],[.105,.07,.23],leather);
+  const seam=new T.MeshStandardMaterial({color:0x524b40,roughness:.85});
+  for(const side of [-1,1]){
+    curvedRod(root,[[side*.07,2.786,.34],[side*.105,2.81,.53],[side*.275,2.806,.84],[side*.22,2.8,1.11]],.004,seam);
+    curvedRod(root,[[side*.10,2.72,.52],[side*.14,2.62,.74],[side*.16,2.71,1.04]],.018,chrome);
+  }
   const crankCenter:V=[0,.78,.48],crank=new T.Group();crank.position.set(...crankCenter);root.add(crank);
   const chainring=mesh(root,new T.TorusGeometry(.245,.018,6,40),metal,[-.20,.78,.48]);chainring.rotation.y=Math.PI/2;
   for(let i=0;i<32;i++){const a=i/32*Math.PI*2;const tooth=mesh(root,new T.BoxGeometry(.025,.035,.035),chrome,[-.20,.78+Math.cos(a)*.257,.48+Math.sin(a)*.257]);tooth.rotation.x=-a;}
