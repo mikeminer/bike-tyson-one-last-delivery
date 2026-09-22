@@ -23,3 +23,7 @@ The first release is single-player. Scores are local and unverified. Ghost races
 Current mint ownership/decimals/extensions were read from mainnet. The redemption route is unverified; the prototype does not offer creation of new locks. Release-time program/schema/route review and real Phantom/device checks remain necessary before claiming a complete mainnet player journey.
 
 Local preview is available; public hosting/source repository, public team alias/contact and source-publication terms have not been chosen. Submission will follow the user-requested PR workflow when explicitly requested.
+
+## Character realism revision
+
+Continuous muscular anatomy replaces overlapping limb primitives. A 13-bone skin deforms through pedal and punch IK, with a closed sculpted head and blended face projection. Warm brown skin albedo adds pores and color variation; PBR microdetail distinguishes skin, rubber, leather and metal. This remains a reference-based procedural game model rather than a scanned replica.

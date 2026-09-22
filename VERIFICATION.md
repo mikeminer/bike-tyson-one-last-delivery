@@ -54,3 +54,9 @@ The showcase metadata file and PR must use the then-current upstream schema, val
 ## Gemini audio revision
 
 Two Gemini-composed loops and eight layered effects are rendered from the retained JSON. Lyria file generation failed twice; there are no Lyria recordings in this build. Audio verification passed nine checks covering real Web Audio output, keyboard triggers, mute, pause/resume, toggling sound while paused, cleanup and 10 WAV exports with finite samples, nonzero energy and bounded peaks. See evidence/audio-verification.json. All 19 browser checks passed. Production smoke decoded the exported audio: RMS 0.03328, peak 0.39359, two channels. Its actual container duration was 9.071864 seconds under browser automation; the simulation replay timeline remains eight seconds. No physical-phone or subjective listening review is claimed.
+
+## Anatomical character and texture revision
+
+Build and all 11 unit checks passed. All 19 browser checks passed with zero uncaught errors, including a complete play/replay/export cycle, phone portrait/landscape, touch input and access fixtures. Desktop and portrait reduced-motion previews were visually inspected, as were playing and landscape screenshots and the refreshed in-app preview. The final shader correction uses defined smoothstep bounds; the final production build and visual preview passed afterward.
+
+The continuous body has 22,514 vertices and 45,028 triangles and is baked offline. Idle rendering reports 87 draw calls, 302,946 rendered triangles and 16 textures. Four production start/quit cycles held 17 textures each, with no growth. The exported 360×640 video decoded successfully, with audible audio (RMS 0.04297, peak 0.40712), no external page requests and no browser errors. Physical-phone performance remains untested. Evidence is in reference-preview.png, reference-mobile-preview.png, browser-verification.json and production-smoke.json.

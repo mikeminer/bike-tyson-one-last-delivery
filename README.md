@@ -2,7 +2,7 @@
 
 Ride. Punch. Crash. Deliver.
 
-A playable Three.js arcade delivery game with an English interface. Its muscle bicycle is modeled after the visual reference supplied by the user: a human torso forms the frame, arms meet the front axle, feet pedal, handlebars emerge beside the head, and the saddle sits above the back. This is a stylized procedural 3D reconstruction, not a scanned or photorealistic character asset. The facial texture was generated from that reference with the built-in image generator; see ASSETS.md. Environment geometry was created for this project. Gemini composed two music loops and eight layered comic effects, rendered locally with Web Audio; Lyria recording attempts failed. Music and effects are included in replay exports. No voice cloning is used.
+A playable Three.js arcade delivery game with an English interface. Its muscle bicycle is modeled after the visual reference supplied by the user: a human torso forms the frame, arms meet the front axle, feet pedal, handlebars emerge beside the head, and the saddle sits above the back. The updated character uses continuous anatomical geometry, skeletal deformation, a sculpted head and textured PBR materials. It remains a reference-based procedural game model rather than a 3D scan. Face and skin textures were generated with the built-in image generator; see ASSETS.md. Environment geometry was created for this project. Gemini composed two music loops and eight layered comic effects, rendered locally with Web Audio; Lyria recording attempts failed. Music and effects are included in replay exports. No voice cloning is used.
 
 ## Play
 

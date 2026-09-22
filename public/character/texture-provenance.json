@@ -1,0 +1,10 @@
+{
+  "date": "2026-09-22",
+  "tool": "Built-in image_gen.imagegen",
+  "reference": "User-supplied 4905cec7-705d-4bfc-8f62-aa5227fa3abd.webp",
+  "output": "skin-albedo-v2.png",
+  "sha256": "93b0774584d9cc99fbae345a915413b6a844c009587ac3ead9d2e03b7ccbc67e",
+  "prompt": "Create a production game texture asset: a seamlessly tileable square photographic skin ALBEDO texture matching the warm medium-dark brown skin of the fictional human bicycle in the reference. This is a FLAT TEXTURE SWATCH, not a person or a body part. Very fine realistic pores, delicate skin grain, sparse fine body hairs, subtle reddish-brown and golden-brown mottling, a few faint capillary/vein color variations, natural mature skin micro wrinkles. Average tone around sRGB #845039, evenly exposed with neutral diffuse illumination. No baked directional lighting, no glossy highlights, no shadows, no large creases, no tattoos, no text, no borders, no gradients. Uniform fine detail across the whole square, all four edges must tile seamlessly. Realistic PBR base-color map, detailed enough for a close-up muscular game character. Reference image is only a guide to skin color and surface texture.",
+  "usage": "Rest-space triplanar skin albedo, color adjusted in shader. Procedural micro-bump. Generated image preserved without pixel edits.",
+  "geometry": "anatomy-v2.bin is reproducible with node scripts/build-anatomy.mjs: smooth-union anatomical volumes, 13-bone skinning, 22514 vertices and 45028 triangles."
+}
